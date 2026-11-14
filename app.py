@@ -7,7 +7,6 @@ import scipy.cluster.hierarchy as sch
 from pathlib import Path
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import AgglomerativeClustering
-
 # Page configuration
 st.set_page_config(
     page_title="Mall Customer Segmentation",
@@ -129,6 +128,54 @@ ax.set_ylabel("Euclidean Distance")
 
 st.pyplot(fig)
 plt.close(fig)
+
+
+
+
+
+
+
+# Customer Segmentation Insights
+
+st.header("📊 Customer Segmentation Insights")
+
+cluster_summary = dataset.groupby("Cluster").agg(
+    Total_Customers=("CustomerID", "count"),
+    Average_Income=("Annual Income (k$)", "mean"),
+    Average_Spending=("Spending Score (1-100)", "mean")
+).round(2)
+
+st.dataframe(cluster_summary, use_container_width=True)
+
+# Display individual cluster insights
+
+st.subheader("🎯 Cluster Analysis")
+
+for cluster in range(n_clusters):
+
+    cluster_data = dataset[dataset["Cluster"] == cluster]
+
+    st.write(f"### Cluster {cluster}")
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Customers", len(cluster_data))
+
+    col2.metric(
+        "Average Income",
+        f"${cluster_data['Annual Income (k$)'].mean():.2f}k"
+    )
+
+    col3.metric(
+        "Average Spending",
+        f"{cluster_data['Spending Score (1-100)'].mean():.2f}"
+    )
+    
+    
+    
+    
+    
+    
 
 # Cluster distribution
 st.header("📈 Cluster Distribution")
