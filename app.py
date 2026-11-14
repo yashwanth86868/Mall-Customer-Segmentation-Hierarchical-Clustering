@@ -28,7 +28,8 @@ st.write(
 # Load dataset
 @st.cache_data
 def load_data():
-    return pd.read_csv(BASE_DIR / "data" / r'C:\Users\ybali\Downloads\Mall_Customers.csv')
+      return pd.read_csv(BASE_DIR / "data" / "Mall_Customers.csv")
+
 
 try:
     dataset = load_data()
